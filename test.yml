@@ -1,0 +1,20 @@
+###############
+GPU: [0]
+
+MODEL:
+  NAME: UNet
+  MODE: small_baseline   #
+  ARGS: 
+    channel: 48
+    reduction: 4
+    dmff_reduction: 16
+    num_heads: [1,2,4,8]
+    num_res: [2,4,12,3]
+
+VAL:  
+  PRETRAIN_MODEL: ~       ## pretrain_model: latested or epoch_num
+  VAL_PS:  ~             ## patchsize of val
+  SAVE_IMG: true
+
+PATH:
+  VAL_DATASET: 'your_test_path'
