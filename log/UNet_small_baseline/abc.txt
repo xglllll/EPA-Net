@@ -1,0 +1,1641 @@
+
+  GPU: [0]
+  PORT: 4567
+  MODEL:[
+    NAME: UNet
+    MODE: small_baseline
+    ARGS:[
+      channel: 48
+      reduction: 4
+      dmff_reduction: 16
+      num_heads: [1, 2, 4, 8]
+      num_res: [2, 4, 12, 3]
+    ]
+  ]
+  TRAIN:[
+    TOTAL_EPOCHS: 3000
+    BATCH_SIZE: 2
+    PRINT_FRE: 60
+    SAVE: 0
+    SAVE_FRE: 50
+    VAL: 0
+    VAL_FRE: 250
+    SAVE_IMG: False
+    RESUME: False
+    PRETRAIN_MODEL: model_latest.pth
+    TRAIN_PS: 256
+    VAL_PS: None
+    LR_RANGE: 300
+  ]
+  PATH:[
+    TRAIN_DATASET: /home/yoga/save_pth/lmx/datasets/GOPRO/train
+    VAL_DATASET: /home/yoga/save_pth/lmx/datasets/GOPRO/test
+  ]
+  OPTIM:[
+    lr: 0.0002
+    eps: 1e-08
+    betas: [0.9, 0.999]
+  ]
+  SCHE:[
+    T_max: 3000
+    eta_min: 1e-06
+  ]
+
+LPANet(
+  (Encoder): ModuleList(
+    (0): EBlock_v1(
+      (head): LPAB_head(
+        (norm1): LayerNorm2d()
+        (norm2): LayerNorm2d()
+        (lpam): LPAM_head(
+          (lcfe): Sequential(
+            (0): Conv2d(48, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): ReLU(inplace=True)
+            (2): Attention(
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              (conv_kv): Conv2d(12, 24, kernel_size=(1, 1), stride=(1, 1))
+              (sigmoid): Sigmoid()
+            )
+            (3): Conv2d(12, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+          (sigmoid): Sigmoid()
+          (dmff): ModuleList(
+            (0-2): 3 x DMFF(
+              (conv_k): Conv2d(48, 3, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v1): Conv2d(48, 3, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v2): Conv2d(48, 3, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (sigmoid): Sigmoid()
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            )
+          )
+          (depth): ModuleList(
+            (0-5): 6 x Conv2d(48, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=48, bias=False)
+          )
+        )
+        (convffn): Sequential(
+          (0): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): GELU(approximate='none')
+          (2): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+          (3): GELU(approximate='none')
+          (4): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        )
+      )
+      (layers): Sequential()
+      (tail): LPAB_tail(
+        (norm1): LayerNorm2d()
+        (norm2): LayerNorm2d()
+        (lpam): LPAM_tail(
+          (lcfe): Sequential(
+            (0): Conv2d(48, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): ReLU(inplace=True)
+            (2): Attention(
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              (conv_kv): Conv2d(12, 24, kernel_size=(1, 1), stride=(1, 1))
+              (sigmoid): Sigmoid()
+            )
+            (3): Conv2d(12, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+          (sigmoid): Sigmoid()
+          (dmff): ModuleList(
+            (0-2): 3 x DMFF(
+              (conv_k): Conv2d(48, 3, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v1): Conv2d(48, 3, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v2): Conv2d(48, 3, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (sigmoid): Sigmoid()
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            )
+          )
+          (depth): ModuleList(
+            (0-5): 6 x Conv2d(48, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=48, bias=False)
+          )
+        )
+        (convffn): Sequential(
+          (0): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): GELU(approximate='none')
+          (2): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+          (3): GELU(approximate='none')
+          (4): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        )
+      )
+    )
+    (1): EBlock_v1(
+      (head): LPAB_head(
+        (norm1): LayerNorm2d()
+        (norm2): LayerNorm2d()
+        (lpam): LPAM_head(
+          (lcfe): Sequential(
+            (0): Conv2d(96, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): ReLU(inplace=True)
+            (2): Attention(
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              (conv_kv): Conv2d(24, 48, kernel_size=(1, 1), stride=(1, 1))
+              (sigmoid): Sigmoid()
+            )
+            (3): Conv2d(24, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+          (sigmoid): Sigmoid()
+          (dmff): ModuleList(
+            (0-2): 3 x DMFF(
+              (conv_k): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v1): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v2): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (sigmoid): Sigmoid()
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            )
+          )
+          (depth): ModuleList(
+            (0-5): 6 x Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=96, bias=False)
+          )
+        )
+        (convffn): Sequential(
+          (0): Conv2d(96, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): GELU(approximate='none')
+          (2): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+          (3): GELU(approximate='none')
+          (4): Conv2d(384, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        )
+      )
+      (layers): Sequential(
+        (0): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(96, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(24, 48, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(24, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=96, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(96, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(384, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+        (1): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(96, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(24, 48, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(24, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=96, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(96, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(384, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+      )
+      (tail): LPAB_tail(
+        (norm1): LayerNorm2d()
+        (norm2): LayerNorm2d()
+        (lpam): LPAM_tail(
+          (lcfe): Sequential(
+            (0): Conv2d(96, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): ReLU(inplace=True)
+            (2): Attention(
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              (conv_kv): Conv2d(24, 48, kernel_size=(1, 1), stride=(1, 1))
+              (sigmoid): Sigmoid()
+            )
+            (3): Conv2d(24, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+          (sigmoid): Sigmoid()
+          (dmff): ModuleList(
+            (0-2): 3 x DMFF(
+              (conv_k): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v1): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v2): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (sigmoid): Sigmoid()
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            )
+          )
+          (depth): ModuleList(
+            (0-5): 6 x Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=96, bias=False)
+          )
+        )
+        (convffn): Sequential(
+          (0): Conv2d(96, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): GELU(approximate='none')
+          (2): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+          (3): GELU(approximate='none')
+          (4): Conv2d(384, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        )
+      )
+    )
+    (2): EBlock_v1(
+      (head): LPAB_head(
+        (norm1): LayerNorm2d()
+        (norm2): LayerNorm2d()
+        (lpam): LPAM_head(
+          (lcfe): Sequential(
+            (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): ReLU(inplace=True)
+            (2): Attention(
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+              (sigmoid): Sigmoid()
+            )
+            (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+          (sigmoid): Sigmoid()
+          (dmff): ModuleList(
+            (0-2): 3 x DMFF(
+              (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (sigmoid): Sigmoid()
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            )
+          )
+          (depth): ModuleList(
+            (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+          )
+        )
+        (convffn): Sequential(
+          (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): GELU(approximate='none')
+          (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+          (3): GELU(approximate='none')
+          (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        )
+      )
+      (layers): Sequential(
+        (0): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+        (1): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+        (2): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+        (3): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+        (4): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+        (5): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+        (6): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+        (7): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+        (8): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+        (9): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+      )
+      (tail): LPAB_tail(
+        (norm1): LayerNorm2d()
+        (norm2): LayerNorm2d()
+        (lpam): LPAM_tail(
+          (lcfe): Sequential(
+            (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): ReLU(inplace=True)
+            (2): Attention(
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+              (sigmoid): Sigmoid()
+            )
+            (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+          (sigmoid): Sigmoid()
+          (dmff): ModuleList(
+            (0-2): 3 x DMFF(
+              (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (sigmoid): Sigmoid()
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            )
+          )
+          (depth): ModuleList(
+            (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+          )
+        )
+        (convffn): Sequential(
+          (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): GELU(approximate='none')
+          (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+          (3): GELU(approximate='none')
+          (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        )
+      )
+    )
+    (3): EBlock_v1(
+      (head): LPAB_head(
+        (norm1): LayerNorm2d()
+        (norm2): LayerNorm2d()
+        (lpam): LPAM_head(
+          (lcfe): Sequential(
+            (0): Conv2d(384, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): ReLU(inplace=True)
+            (2): Attention(
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              (conv_kv): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              (sigmoid): Sigmoid()
+            )
+            (3): Conv2d(96, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+          (sigmoid): Sigmoid()
+          (dmff): ModuleList(
+            (0-2): 3 x DMFF(
+              (conv_k): Conv2d(384, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v1): Conv2d(384, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v2): Conv2d(384, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (sigmoid): Sigmoid()
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            )
+          )
+          (depth): ModuleList(
+            (0-5): 6 x Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+          )
+        )
+        (convffn): Sequential(
+          (0): Conv2d(384, 1536, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): GELU(approximate='none')
+          (2): Conv2d(1536, 1536, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=1536, bias=False)
+          (3): GELU(approximate='none')
+          (4): Conv2d(1536, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        )
+      )
+      (layers): Sequential(
+        (0): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(384, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(96, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(384, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(384, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(384, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(384, 1536, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(1536, 1536, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=1536, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(1536, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+      )
+      (tail): LPAB_tail(
+        (norm1): LayerNorm2d()
+        (norm2): LayerNorm2d()
+        (lpam): LPAM_tail(
+          (lcfe): Sequential(
+            (0): Conv2d(384, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): ReLU(inplace=True)
+            (2): Attention(
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              (conv_kv): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              (sigmoid): Sigmoid()
+            )
+            (3): Conv2d(96, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+          (sigmoid): Sigmoid()
+          (dmff): ModuleList(
+            (0-2): 3 x DMFF(
+              (conv_k): Conv2d(384, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v1): Conv2d(384, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v2): Conv2d(384, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (sigmoid): Sigmoid()
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            )
+          )
+          (depth): ModuleList(
+            (0-5): 6 x Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+          )
+        )
+        (convffn): Sequential(
+          (0): Conv2d(384, 1536, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): GELU(approximate='none')
+          (2): Conv2d(1536, 1536, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=1536, bias=False)
+          (3): GELU(approximate='none')
+          (4): Conv2d(1536, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        )
+      )
+    )
+  )
+  (downsample): ModuleList(
+    (0): BasicConv(
+      (main): Sequential(
+        (0): Conv2d(48, 96, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (1): LeakyReLU(negative_slope=0.2, inplace=True)
+      )
+    )
+    (1): BasicConv(
+      (main): Sequential(
+        (0): Conv2d(96, 192, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (1): LeakyReLU(negative_slope=0.2, inplace=True)
+      )
+    )
+    (2): BasicConv(
+      (main): Sequential(
+        (0): Conv2d(192, 384, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (1): LeakyReLU(negative_slope=0.2, inplace=True)
+      )
+    )
+  )
+  (Decoder): ModuleList(
+    (0): DBlock_v1(
+      (head): LPAB_head(
+        (norm1): LayerNorm2d()
+        (norm2): LayerNorm2d()
+        (lpam): LPAM_head(
+          (lcfe): Sequential(
+            (0): Conv2d(384, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): ReLU(inplace=True)
+            (2): Attention(
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              (conv_kv): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              (sigmoid): Sigmoid()
+            )
+            (3): Conv2d(96, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+          (sigmoid): Sigmoid()
+          (dmff): ModuleList(
+            (0-2): 3 x DMFF(
+              (conv_k): Conv2d(384, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v1): Conv2d(384, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v2): Conv2d(384, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (sigmoid): Sigmoid()
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            )
+          )
+          (depth): ModuleList(
+            (0-5): 6 x Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+          )
+        )
+        (convffn): Sequential(
+          (0): Conv2d(384, 1536, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): GELU(approximate='none')
+          (2): Conv2d(1536, 1536, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=1536, bias=False)
+          (3): GELU(approximate='none')
+          (4): Conv2d(1536, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        )
+      )
+      (layers): Sequential(
+        (0): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(384, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(96, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(384, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(384, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(384, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(384, 1536, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(1536, 1536, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=1536, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(1536, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+      )
+      (tail): LPAB_tail(
+        (norm1): LayerNorm2d()
+        (norm2): LayerNorm2d()
+        (lpam): LPAM_tail(
+          (lcfe): Sequential(
+            (0): Conv2d(384, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): ReLU(inplace=True)
+            (2): Attention(
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              (conv_kv): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1))
+              (sigmoid): Sigmoid()
+            )
+            (3): Conv2d(96, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+          (sigmoid): Sigmoid()
+          (dmff): ModuleList(
+            (0-2): 3 x DMFF(
+              (conv_k): Conv2d(384, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v1): Conv2d(384, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v2): Conv2d(384, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (sigmoid): Sigmoid()
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            )
+          )
+          (depth): ModuleList(
+            (0-5): 6 x Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+          )
+        )
+        (convffn): Sequential(
+          (0): Conv2d(384, 1536, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): GELU(approximate='none')
+          (2): Conv2d(1536, 1536, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=1536, bias=False)
+          (3): GELU(approximate='none')
+          (4): Conv2d(1536, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        )
+      )
+    )
+    (1): DBlock_v1(
+      (head): LPAB_head(
+        (norm1): LayerNorm2d()
+        (norm2): LayerNorm2d()
+        (lpam): LPAM_head(
+          (lcfe): Sequential(
+            (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): ReLU(inplace=True)
+            (2): Attention(
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+              (sigmoid): Sigmoid()
+            )
+            (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+          (sigmoid): Sigmoid()
+          (dmff): ModuleList(
+            (0-2): 3 x DMFF(
+              (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (sigmoid): Sigmoid()
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            )
+          )
+          (depth): ModuleList(
+            (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+          )
+        )
+        (convffn): Sequential(
+          (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): GELU(approximate='none')
+          (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+          (3): GELU(approximate='none')
+          (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        )
+      )
+      (layers): Sequential(
+        (0): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+        (1): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+        (2): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+        (3): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+        (4): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+        (5): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+        (6): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+        (7): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+        (8): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+        (9): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+      )
+      (tail): LPAB_tail(
+        (norm1): LayerNorm2d()
+        (norm2): LayerNorm2d()
+        (lpam): LPAM_tail(
+          (lcfe): Sequential(
+            (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): ReLU(inplace=True)
+            (2): Attention(
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              (conv_kv): Conv2d(48, 96, kernel_size=(1, 1), stride=(1, 1))
+              (sigmoid): Sigmoid()
+            )
+            (3): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+          (sigmoid): Sigmoid()
+          (dmff): ModuleList(
+            (0-2): 3 x DMFF(
+              (conv_k): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v1): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v2): Conv2d(192, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (sigmoid): Sigmoid()
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            )
+          )
+          (depth): ModuleList(
+            (0-5): 6 x Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+          )
+        )
+        (convffn): Sequential(
+          (0): Conv2d(192, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): GELU(approximate='none')
+          (2): Conv2d(768, 768, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=768, bias=False)
+          (3): GELU(approximate='none')
+          (4): Conv2d(768, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        )
+      )
+    )
+    (2): DBlock_v1(
+      (head): LPAB_head(
+        (norm1): LayerNorm2d()
+        (norm2): LayerNorm2d()
+        (lpam): LPAM_head(
+          (lcfe): Sequential(
+            (0): Conv2d(96, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): ReLU(inplace=True)
+            (2): Attention(
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              (conv_kv): Conv2d(24, 48, kernel_size=(1, 1), stride=(1, 1))
+              (sigmoid): Sigmoid()
+            )
+            (3): Conv2d(24, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+          (sigmoid): Sigmoid()
+          (dmff): ModuleList(
+            (0-2): 3 x DMFF(
+              (conv_k): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v1): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v2): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (sigmoid): Sigmoid()
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            )
+          )
+          (depth): ModuleList(
+            (0-5): 6 x Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=96, bias=False)
+          )
+        )
+        (convffn): Sequential(
+          (0): Conv2d(96, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): GELU(approximate='none')
+          (2): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+          (3): GELU(approximate='none')
+          (4): Conv2d(384, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        )
+      )
+      (layers): Sequential(
+        (0): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(96, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(24, 48, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(24, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=96, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(96, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(384, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+        (1): LPAB_mid(
+          (norm1): LayerNorm2d()
+          (norm2): LayerNorm2d()
+          (lpam): LPAM_mid(
+            (lcfe): Sequential(
+              (0): Conv2d(96, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): ReLU(inplace=True)
+              (2): Attention(
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+                (conv_kv): Conv2d(24, 48, kernel_size=(1, 1), stride=(1, 1))
+                (sigmoid): Sigmoid()
+              )
+              (3): Conv2d(24, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            )
+            (sigmoid): Sigmoid()
+            (dmff): ModuleList(
+              (0-2): 3 x DMFF(
+                (conv_k): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v1): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (conv_v2): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (sigmoid): Sigmoid()
+                (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              )
+            )
+            (depth): ModuleList(
+              (0-5): 6 x Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=96, bias=False)
+            )
+          )
+          (convffn): Sequential(
+            (0): Conv2d(96, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GELU(approximate='none')
+            (2): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+            (3): GELU(approximate='none')
+            (4): Conv2d(384, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+        )
+      )
+      (tail): LPAB_tail(
+        (norm1): LayerNorm2d()
+        (norm2): LayerNorm2d()
+        (lpam): LPAM_tail(
+          (lcfe): Sequential(
+            (0): Conv2d(96, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): ReLU(inplace=True)
+            (2): Attention(
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              (conv_kv): Conv2d(24, 48, kernel_size=(1, 1), stride=(1, 1))
+              (sigmoid): Sigmoid()
+            )
+            (3): Conv2d(24, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+          (sigmoid): Sigmoid()
+          (dmff): ModuleList(
+            (0-2): 3 x DMFF(
+              (conv_k): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v1): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v2): Conv2d(96, 6, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (sigmoid): Sigmoid()
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            )
+          )
+          (depth): ModuleList(
+            (0-5): 6 x Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=96, bias=False)
+          )
+        )
+        (convffn): Sequential(
+          (0): Conv2d(96, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): GELU(approximate='none')
+          (2): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=384, bias=False)
+          (3): GELU(approximate='none')
+          (4): Conv2d(384, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        )
+      )
+    )
+    (3): DBlock_v1(
+      (head): LPAB_head(
+        (norm1): LayerNorm2d()
+        (norm2): LayerNorm2d()
+        (lpam): LPAM_head(
+          (lcfe): Sequential(
+            (0): Conv2d(48, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): ReLU(inplace=True)
+            (2): Attention(
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              (conv_kv): Conv2d(12, 24, kernel_size=(1, 1), stride=(1, 1))
+              (sigmoid): Sigmoid()
+            )
+            (3): Conv2d(12, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+          (sigmoid): Sigmoid()
+          (dmff): ModuleList(
+            (0-2): 3 x DMFF(
+              (conv_k): Conv2d(48, 3, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v1): Conv2d(48, 3, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v2): Conv2d(48, 3, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (sigmoid): Sigmoid()
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            )
+          )
+          (depth): ModuleList(
+            (0-5): 6 x Conv2d(48, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=48, bias=False)
+          )
+        )
+        (convffn): Sequential(
+          (0): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): GELU(approximate='none')
+          (2): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+          (3): GELU(approximate='none')
+          (4): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        )
+      )
+      (layers): Sequential()
+      (tail): LPAB_tail(
+        (norm1): LayerNorm2d()
+        (norm2): LayerNorm2d()
+        (lpam): LPAM_tail(
+          (lcfe): Sequential(
+            (0): Conv2d(48, 12, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): ReLU(inplace=True)
+            (2): Attention(
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+              (conv_kv): Conv2d(12, 24, kernel_size=(1, 1), stride=(1, 1))
+              (sigmoid): Sigmoid()
+            )
+            (3): Conv2d(12, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          )
+          (sigmoid): Sigmoid()
+          (dmff): ModuleList(
+            (0-2): 3 x DMFF(
+              (conv_k): Conv2d(48, 3, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v1): Conv2d(48, 3, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (conv_v2): Conv2d(48, 3, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (sigmoid): Sigmoid()
+              (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            )
+          )
+          (depth): ModuleList(
+            (0-5): 6 x Conv2d(48, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=48, bias=False)
+          )
+        )
+        (convffn): Sequential(
+          (0): Conv2d(48, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): GELU(approximate='none')
+          (2): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+          (3): GELU(approximate='none')
+          (4): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        )
+      )
+    )
+  )
+  (upsample): ModuleList(
+    (0): Sequential(
+      (0): Conv2d(384, 768, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (1): PixelShuffle(upscale_factor=2)
+    )
+    (1): Sequential(
+      (0): Conv2d(192, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (1): PixelShuffle(upscale_factor=2)
+    )
+    (2): Sequential(
+      (0): Conv2d(96, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (1): PixelShuffle(upscale_factor=2)
+    )
+  )
+  (Convs): ModuleList(
+    (0): BasicConv(
+      (main): Sequential(
+        (0): Conv2d(3, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (1): LeakyReLU(negative_slope=0.2, inplace=True)
+      )
+    )
+    (1): BasicConv(
+      (main): Sequential(
+        (0): Conv2d(48, 3, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      )
+    )
+  )
+)
+parameters:19023552
+macs = None 	 params = None
+extra macs = 0.0 GMac
