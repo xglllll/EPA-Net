@@ -102,6 +102,13 @@ evaluate_RealBlur.py
 <img src= "https://i.imgur.com/i51aJxj.png">
 
 
+|   Dataset   | GoPro     | HIDE       | RealBlur-J |
+| :---------: | :-------: | :--------: | :---------: |
+|  PSNR (dB)  |   33.22   |   31.10    |    28.82    |
+|    SSIM     |   0.963   |   0.941    |    0.879    |
+
+
+
 ## Citation
 If you use Restormer, please consider citing:
 
