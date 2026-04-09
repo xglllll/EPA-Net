@@ -110,7 +110,7 @@ evaluate_RealBlur.py
 
 
 ## Citation
-If you use Restormer, please consider citing:
+If you use EPA-Net, please consider citing:
 
     @article{hua2025efficient,
         title={An efficient and lightweight pyramid attention for image deblurring},
